@@ -1,6 +1,6 @@
 # ShotSpot
 
-Photo Location app.  Affinity is a app that can be used to look for places to take photos.  Whether it be while you're on vacation, or you're at home, if you want take some photos, this app will tell you where to go to take the photos you want.  You search based on location and type of photos you want to take and the app with returns places that match your filters.
+Photo Location app.  ShotSpot is an app that can be used to look for places to take photos.  Whether it be while you're on vacation, or you're at home, if you want take some photos, this app will tell you where to go to take the photos you want.  You search based on location and type of photos you want to take and the app with returns places that match your filters.
 
 
 ## User Stories
