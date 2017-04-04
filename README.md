@@ -39,5 +39,7 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
     "dislikes": 1,
     "notes": "this is a note",
     "timeTaken": "312443542", 
+    }
+ }
 ```
 
