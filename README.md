@@ -36,7 +36,7 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
     "latitude": -112.512,
     "category": "building",
     "likes": 1021,
-    "hates": 1,
+    "dislikes": 1,
     "notes": "this is a note",
     "timeTaken": "312443542", 
 ```
