@@ -22,6 +22,11 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
 * [ ] User can upload photos that they take and map them to location
   * [ ] User can "publish" photos that they upload which would they allow other users to see their photos
 
+## Apis we will be using for out primary stories
+* Google places
+* Google location
+* Parse
+* Flickr
 
 ## Parse schema
 ### photos
