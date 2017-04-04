@@ -25,6 +25,7 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
 
 ## Parse schema
 ### photos
+```json
 {
   "http://my.site.com/mypics/1234.gif": {
     "width": 640,
@@ -39,3 +40,4 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
     "notes": "this is a note",
     "timestamp": "312443542", // this is time the picture was taken.
   }
+```
