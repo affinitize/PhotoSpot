@@ -30,7 +30,7 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
   "http://my.site.com/mypics/1234.gif": {
     "width": 640,
     "height": 480,
-	"type": "GIF"
+    "type": "GIF",
     "colordepth": 256,
     "longitude": 157.123,
     "latitude": -112.512,
@@ -38,6 +38,6 @@ Photo Location app.  ShotSpot is an app that can be used to look for places to t
     "likes": 1021,
     "hates": 1,
     "notes": "this is a note",
-    "timestamp": "312443542", // this is time the picture was taken.
-  }
+    "timeTaken": "312443542", 
 ```
+
