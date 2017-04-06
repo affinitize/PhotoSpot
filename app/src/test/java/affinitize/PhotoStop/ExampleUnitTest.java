@@ -1,4 +1,4 @@
-package affinitize.affinity;
+package affinitize.PhotoStop;
 
 import org.junit.Test;
 
