@@ -19,7 +19,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "affinitize.PhotoStop"
+        applicationId "affinitize.affinity"
         minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
@@ -45,4 +45,6 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
+    compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'com.parse:parse-android:1.14.1'
 }

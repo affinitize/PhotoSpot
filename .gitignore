@@ -10,6 +10,8 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+# API Keys file
+/app/src/main/assets/api_key.properties
 
 # Eclipse project files
 .classpath

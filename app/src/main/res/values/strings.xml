@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">PhotoStop</string>
+    <string name="app_name">PhotoSpot</string>
+    <string name="parse_server_url">http://localhost:1337/parse/</string>
+    <string name="parse_app_id">PhotoSpot</string>
+    <string name="file_not_found">: File not found.</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package affinitize.PhotoStop;
+package com.codepath.photospot.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,5 +15,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
+
+        // Done in the Application class...
+        //Parse.initialize(this);
+
     }
 }
