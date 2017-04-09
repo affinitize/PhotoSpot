@@ -13,6 +13,14 @@ public class FlickrPhoto {
     String secret;
     String owner;
     String title;
+//    String description;
+    String ownername;
+    String dateupload;
+    String url_m;
+    double latitude;
+    double longitude;
+    String tags;
+
     boolean isPublic;
     boolean isFriend;
     boolean isFamily;

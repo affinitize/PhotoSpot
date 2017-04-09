@@ -15,7 +15,7 @@ public class FlickrClient {
     public static final String FORMAT_JSON = "json";
 
     public void getPhotos(Callback callback) {
-        sendRequest("flickr.photos.getRecent", callback);
+        sendRequest("flickr.photos.search", callback);
     }
 
     private void sendRequest(String method, Callback callback) {
@@ -24,6 +24,14 @@ public class FlickrClient {
         urlBuilder.addQueryParameter("api_key", APIKEY);
         urlBuilder.addQueryParameter("format", FORMAT_JSON);
         urlBuilder.addQueryParameter("nojsoncallback", "1");
+        urlBuilder.addQueryParameter("extras", "description,date_upload,owner_name,geo,tags,url_m");
+        urlBuilder.addQueryParameter("content_type", "1");
+        urlBuilder.addQueryParameter("per_page", "20");
+
+        urlBuilder.addQueryParameter("lat", "37.401117");
+        urlBuilder.addQueryParameter("lon", "-121.926177");
+        urlBuilder.addQueryParameter("tags",
+                "sunset,beach,water,sky,nature,night,art,light,snow,sun,clouds,park,winter,landscape,summer,sea,city,lake,bridge");
 
         String url = urlBuilder.build().toString();
 
