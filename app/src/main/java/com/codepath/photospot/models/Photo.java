@@ -82,16 +82,20 @@ public class Photo {
         //height = foto.getHeight();
         //type = foto.getType();
         //colordepth = foto.getColorDepth();
-/* TODO...
         longitude = foto.getLongitude();
         latitude = foto.getLatitude();
-*/
         //likes = foto.getLikes();
         //dislikes = foto.getDislikes();
         comment = foto.getTitle();
-        createdby = foto.getOwner();
-        //createdtime = foto.getCreatedTime();
+        // do not expose Flickr usernames...
+        //////createdby = foto.getOwner();
+        createdby = foto.getOwnername();
         source = PHOTO_SOURCE_FLICKR;
+        try {
+            createdtime = Long.parseLong(foto.getDateupload());
+        } catch (NumberFormatException e) {
+            // do nothing, but dont fail; createdtime will be 0...
+        }
 
         ArrayList<String> list = new ArrayList<>();
         if (foto.isFamily()) {
@@ -102,6 +106,16 @@ public class Photo {
         }
         if (foto.isPublic()) {
             list.add(FLICKR_CATEGORY_PUBLIC);
+        }
+        // Add whatever tags we have into categories...
+        String tags = foto.getTags();
+        if (tags!=null && tags.length()>1) {
+            String[] tagarr = tags.split(" ");
+            for (String tag: tagarr) {
+                if (tag.length()>1) {
+                    list.add(tag);
+                }
+            }
         }
         if (list.size()>0) {
             categories = new String[list.size()];
