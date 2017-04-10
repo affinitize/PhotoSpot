@@ -1,6 +1,5 @@
 package com.codepath.photospot.fragments;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -56,9 +55,10 @@ public class PhotoListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     }
 
-    public void photoSearch(Location location) {
+    public void photoSearch(double lat, double lang) {
+        photos.clear();
         FlickrClient fc = FlickrClient.getFlickrClient();
-        fc.getPhotos(cb, location);
+        fc.getPhotos(cb, lat, lang);
     }
 
     Callback cb = new Callback() {

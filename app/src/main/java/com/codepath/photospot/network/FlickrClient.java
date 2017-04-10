@@ -1,7 +1,5 @@
 package com.codepath.photospot.network;
 
-import android.location.Location;
-
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -37,11 +35,11 @@ public class FlickrClient {
         super();
     }
 
-    public void getPhotos(Callback callback, Location location) {
-        sendRequest("flickr.photos.search", callback, location);
+    public void getPhotos(Callback callback, double lat, double lang) {
+        sendRequest("flickr.photos.search", callback, lat, lang);
     }
 
-    private void sendRequest(String method, Callback callback, Location location) {
+    private void sendRequest(String method, Callback callback, double lat, double lang) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URL).newBuilder();
         urlBuilder.addQueryParameter("method", method);
         urlBuilder.addQueryParameter("api_key", APIKEY);
@@ -51,8 +49,8 @@ public class FlickrClient {
         urlBuilder.addQueryParameter("content_type", "1");
         urlBuilder.addQueryParameter("per_page", "20");
 
-        urlBuilder.addQueryParameter("lat", String.valueOf(location.getLatitude()));
-        urlBuilder.addQueryParameter("lon", String.valueOf(location.getLongitude()));
+        urlBuilder.addQueryParameter("lat", String.valueOf(lat));
+        urlBuilder.addQueryParameter("lon", String.valueOf(lang));
         urlBuilder.addQueryParameter("tags",
                 "sunset,beach,water,sky,nature,night,art,light,snow,sun,clouds,park,winter,landscape,summer,sea,city,lake,bridge");
 

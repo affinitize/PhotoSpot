@@ -10,8 +10,7 @@
     android:theme="@+style/ToolbarTheme"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:titleTextAppearance="@+style/Toolbar.TitleText">
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <TextView
         android:id="@+id/toolbar_title"

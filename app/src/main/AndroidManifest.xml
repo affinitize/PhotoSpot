@@ -38,6 +38,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api_key" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA_fScSOrtb_aOxBzcf93PAhaL3C6GT2m8" />
+
         <activity android:name="com.codepath.photospot.activities.AddPhotoActivity" />
 
 
