@@ -64,4 +64,33 @@ public class FlickrPhoto {
     public boolean isFamily() {
         return isFamily;
     }
+
+
+    public static String getPhotoURL() {
+        return photoURL;
+    }
+
+    public String getOwnername() {
+        return ownername;
+    }
+
+    public String getDateupload() {
+        return dateupload;
+    }
+
+    public String getUrl_m() {
+        return url_m;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getTags() {
+        return tags;
+    }
 }
