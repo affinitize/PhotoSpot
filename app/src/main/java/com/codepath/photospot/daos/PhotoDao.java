@@ -11,6 +11,7 @@ import org.json.JSONArray;
  *
  * { "123456789": {
  *     "url": "http://my.site.com/mypix/1234.gif",
+ *     "url": "http://my.site.com/mypix/1234.gif",
  *     "width": 640,
  *     "height": 480,
  * 	   "type": "GIF",
@@ -30,10 +31,11 @@ import org.json.JSONArray;
  * @author dfriedman
  *
  */
-@ParseClassName("Photo")
+@ParseClassName("PhotoDao")
 public class PhotoDao extends ParseObject {
 
     // This is the internal parseDb unique id
+    public static final String OBJECT_ID_KEY = "objectId";
     public static final String URL_KEY = "url";
     public static final String WIDTH_KEY = "width";
     public static final String HEIGHT_KEY = "height";
@@ -49,9 +51,25 @@ public class PhotoDao extends ParseObject {
     public static final String CREATED_TIME_KEY = "createdTime";
     public static final String SOURCE_KEY = "source";
 
-    public PhotoDao(Photo photo) {
-        super();
+    /*
+     * Ensure that your subclass has a public default (i.e. zero-argument) constructor.
+     */
+    public PhotoDao() {
+    }
 
+    public static synchronized PhotoDao newPhotoDao(Photo photo) {
+        PhotoDao photoDao;
+        if (photo==null || photo.getObjectId()==null) {
+            photoDao = ParseObject.create(PhotoDao.class);
+        } else {
+            photoDao = ParseObject.createWithoutData(PhotoDao.class, photo.getObjectId());
+        }
+        photoDao.setDataFromPhoto(photo);
+        return photoDao;
+    }
+
+    public void setDataFromPhoto(Photo photo) {
+        setObjectId(photo.getObjectId());
         setUrl(photo.getUrl());
         setComment(photo.getComment());
         setType(photo.getType());
@@ -162,5 +180,6 @@ public class PhotoDao extends ParseObject {
     public void setCategories(JSONArray categories) {
         put(CATEGORIES_KEY, categories);
     }
+
 
 }

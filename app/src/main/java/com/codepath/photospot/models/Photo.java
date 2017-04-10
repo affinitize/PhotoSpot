@@ -1,9 +1,12 @@
 package com.codepath.photospot.models;
 
+import com.codepath.photospot.daos.FlickrPhoto;
 import com.codepath.photospot.daos.PhotoDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * Created by dfrie on 4/6/2017.
@@ -11,6 +14,13 @@ import org.json.JSONException;
 
 public class Photo {
 
+    public static final String PHOTO_SOURCE_FLICKR = "Flickr";
+
+    public static final String FLICKR_CATEGORY_FRIEND = "Friend";
+    public static final String FLICKR_CATEGORY_FAMILY = "Family";
+    public static final String FLICKR_CATEGORY_PUBLIC = "Public";
+
+    public String objectId;
     public String url;
     public int width;
     public int height;
@@ -26,9 +36,14 @@ public class Photo {
     public long createdtime;
     public String source;
 
-    public Photo(PhotoDao dao) {
+    public Photo() {
         super();
+    }
 
+    public Photo(PhotoDao dao) {
+        this();
+
+        objectId = dao.getObjectId();
         url = dao.getUrl();
         width = dao.getWidth();
         height = dao.getHeight();
@@ -57,6 +72,49 @@ public class Photo {
             //TODO:  do something more here? ...like truncate the array?...
             e.printStackTrace();
         }
+    }
+
+    public Photo(FlickrPhoto foto) {
+        this();
+
+        url = foto.getUrl();
+        //width = foto.getWidth();
+        //height = foto.getHeight();
+        //type = foto.getType();
+        //colordepth = foto.getColorDepth();
+/* TODO...
+        longitude = foto.getLongitude();
+        latitude = foto.getLatitude();
+*/
+        //likes = foto.getLikes();
+        //dislikes = foto.getDislikes();
+        comment = foto.getTitle();
+        createdby = foto.getOwner();
+        //createdtime = foto.getCreatedTime();
+        source = PHOTO_SOURCE_FLICKR;
+
+        ArrayList<String> list = new ArrayList<>();
+        if (foto.isFamily()) {
+            list.add(FLICKR_CATEGORY_FAMILY);
+        }
+        if (foto.isFriend()) {
+            list.add(FLICKR_CATEGORY_FRIEND);
+        }
+        if (foto.isPublic()) {
+            list.add(FLICKR_CATEGORY_PUBLIC);
+        }
+        if (list.size()>0) {
+            categories = new String[list.size()];
+            categories = list.toArray(categories);
+        }
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getUrl() {

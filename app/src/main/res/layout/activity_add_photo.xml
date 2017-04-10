@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tweetLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".activities.AddPhotoActivity">
+
+    <include
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/etUrl"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/toolbar"
+        android:ems="12"
+        android:foregroundTint="@android:drawable/bottom_bar"
+        android:hint="@string/enter_url"
+        android:maxLength="140" />
+
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/etUrl"
+        android:ems="12"
+        android:foregroundTint="@android:drawable/bottom_bar"
+        android:hint="@string/enter_comment"
+        android:maxLength="140" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etPhoto"
+        android:layout_margin="20dp"
+        android:background="@android:color/black"
+        android:foreground="@android:color/black"
+        android:foregroundTint="@android:drawable/bottom_bar"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/space"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawablePadding="12dp"
+        android:inputType="textCapSentences"
+        android:text="@string/button_add_photo" />
+
+    <TextView
+        android:id="@+id/tvErrorMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btPhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        tools:text="TextView" />
+
+
+</RelativeLayout>

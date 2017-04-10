@@ -3,5 +3,10 @@
     <string name="parse_server_url">http://localhost:1337/parse/</string>
     <string name="parse_app_id">PhotoSpot</string>
     <string name="file_not_found">: File not found.</string>
+    <string name="menu_add">Add a Photo</string>
+    <string name="enter_url">Enter the URL...</string>
+    <string name="enter_comment">Enter a Comment...</string>
+    <string name="enter_a_url">Please enter a URL.</string>
+    <string name="button_add_photo">Add a Photo</string>
 
 </resources>

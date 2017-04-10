@@ -26,6 +26,9 @@
             android:name="com.parse.APPLICATION_ID"
             android:value="@string/parse_app_id" />
 
+        <activity android:name="com.codepath.photospot.activities.AddPhotoActivity" />
+
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -38,10 +38,10 @@ import java.util.List;
  * - Photo object
  *
  * Like a pic:
- * - Photo url
+ * - Photo object
  *
  * Dislike a pic:
- * - Photo url
+ * - Photo object
  *
  * @author dfriedman
  *
@@ -56,8 +56,8 @@ public interface ParseService {
 
     public ServiceResponse<Photo> deletePhoto(Photo photo);
 
-    public ServiceResponse<Integer> likePhoto(String url);
+    public void likePhoto(Photo photo);
 
-    public ServiceResponse<Integer> dislikePhoto(String url);
+    public void dislikePhoto(Photo photo);
     
 }

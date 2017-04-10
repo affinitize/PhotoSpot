@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.codepath.photospot.daos.PhotoDao;
 import com.codepath.photospot.models.Photo;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
@@ -20,7 +22,19 @@ import java.util.Set;
 
 public class ParseServiceImpl implements ParseService, ParseConstants {
 
-    public static final String PHOTO_TYPE = "com.codepath.photospot.daos.Photo";
+    public static final String PHOTO_TYPE = "PhotoDao";
+
+    public static final String COLUMN_NAME_URL = "url";
+    public static final String COLUMN_NAME_TYPE = "type";
+    public static final String COLUMN_NAME_WIDTH = "width";
+    public static final String COLUMN_NAME_HEIGHT = "height";
+    public static final String COLUMN_NAME_COLOR_DEPTH = "colorDepth";
+    public static final String COLUMN_NAME_CATEGORIES = "categories";
+    public static final String COLUMN_NAME_LIKES = "likes";
+    public static final String COLUMN_NAME_DISLIKES = "dislikes";
+    public static final String COLUMN_NAME_CREATED_BY = "createdBy";
+    public static final String COLUMN_NAME_SOURCE = "source";
+    public static final String COLUMN_NAME_CREATED_TIME = "createdTime";
 
     @Override
     public ServiceResponse<List<Photo>> getPhotos(HashMap<String, Object> params) {
@@ -33,7 +47,7 @@ public class ParseServiceImpl implements ParseService, ParseConstants {
         for (String key: keys) {
             Object value = params.get(key);
             if (key.equals(SEARCH_KEY_URL)) {
-                query.whereEqualTo("url", value);
+                query.whereEqualTo(COLUMN_NAME_URL, value);
             } else if (key.equals(SEARCH_KEY_LONGITUDE)) {
                 longitude = (Float)value;
             } else if (key.equals(SEARCH_KEY_LATITUDE)) {
@@ -41,38 +55,38 @@ public class ParseServiceImpl implements ParseService, ParseConstants {
             } else if (key.equals(SEARCH_KEY_RADIUS)) {
                 radius = (Float)value;
             } else if (key.equals(SEARCH_KEY_TYPE)) {
-                query.whereEqualTo("type", value);
+                query.whereEqualTo(COLUMN_NAME_TYPE, value);
             } else if (key.equals(SEARCH_KEY_MAX_WIDTH)) {
-                query.whereLessThanOrEqualTo("width", value);
+                query.whereLessThanOrEqualTo(COLUMN_NAME_WIDTH, value);
             } else if (key.equals(SEARCH_KEY_MIN_WIDTH)) {
-                query.whereGreaterThanOrEqualTo("width", value);
+                query.whereGreaterThanOrEqualTo(COLUMN_NAME_WIDTH, value);
             } else if (key.equals(SEARCH_KEY_MAX_HEIGHT)) {
-                query.whereLessThanOrEqualTo("height", value);
+                query.whereLessThanOrEqualTo(COLUMN_NAME_HEIGHT, value);
             } else if (key.equals(SEARCH_KEY_MIN_HEIGHT)) {
-                query.whereGreaterThanOrEqualTo("height", value);
+                query.whereGreaterThanOrEqualTo(COLUMN_NAME_HEIGHT, value);
             } else if (key.equals(SEARCH_KEY_MAX_COLORS)) {
-                query.whereLessThanOrEqualTo("colorDepth", value);
+                query.whereLessThanOrEqualTo(COLUMN_NAME_COLOR_DEPTH, value);
             } else if (key.equals(SEARCH_KEY_MIN_COLORS)) {
-                query.whereGreaterThanOrEqualTo("colorDepth", value);
+                query.whereGreaterThanOrEqualTo(COLUMN_NAME_COLOR_DEPTH, value);
             } else if (key.equals(SEARCH_KEY_CATEGORY)) {
                 // This will Find objects where the array in categories contains the value...
-                query.whereEqualTo("categories", value);
+                query.whereEqualTo(COLUMN_NAME_CATEGORIES, value);
             } else if (key.equals(SEARCH_KEY_MAX_LIKES)) {
-                query.whereLessThanOrEqualTo("likes", value);
+                query.whereLessThanOrEqualTo(COLUMN_NAME_LIKES, value);
             } else if (key.equals(SEARCH_KEY_MIN_LIKES)) {
-                query.whereGreaterThanOrEqualTo("likes", value);
+                query.whereGreaterThanOrEqualTo(COLUMN_NAME_LIKES, value);
             } else if (key.equals(SEARCH_KEY_MAX_DISLIKES)) {
-                query.whereLessThanOrEqualTo("dislikes", value);
+                query.whereLessThanOrEqualTo(COLUMN_NAME_DISLIKES, value);
             } else if (key.equals(SEARCH_KEY_MIN_DISLIKES)) {
-                query.whereGreaterThanOrEqualTo("dislikes", value);
+                query.whereGreaterThanOrEqualTo(COLUMN_NAME_DISLIKES, value);
             } else if (key.equals(SEARCH_KEY_CREATED_BY)) {
-                query.whereEqualTo("createdBy", value);
+                query.whereEqualTo(COLUMN_NAME_CREATED_BY, value);
             } else if (key.equals(SEARCH_KEY_SOURCE)) {
-                query.whereEqualTo("source", value);
+                query.whereEqualTo(COLUMN_NAME_SOURCE, value);
             } else if (key.equals(SEARCH_KEY_MAX_TIME)) {
-                query.whereLessThanOrEqualTo("createdTime", value);
+                query.whereLessThanOrEqualTo(COLUMN_NAME_CREATED_TIME, value);
             } else if (key.equals(SEARCH_KEY_MIN_TIME)) {
-                query.whereGreaterThanOrEqualTo("createdTime", value);
+                query.whereGreaterThanOrEqualTo(COLUMN_NAME_CREATED_TIME, value);
             } else if (key.equals(SEARCH_KEY_SKIP_COUNT)) {
                 // start at the offset value...
                 query.setSkip((Integer)value);
@@ -125,8 +139,7 @@ public class ParseServiceImpl implements ParseService, ParseConstants {
     public ServiceResponse<Photo> postPhoto(final Photo photo) {
         final ServiceResponse<Photo> response = new ServiceResponse<>();
         response.set(photo);
-
-        PhotoDao photoDao = new PhotoDao(photo);
+        PhotoDao photoDao = PhotoDao.newPhotoDao(photo);
         try {
             photoDao.saveInBackground(new SaveCallback() {
                 @Override
@@ -144,21 +157,55 @@ public class ParseServiceImpl implements ParseService, ParseConstants {
 
     @Override
     public ServiceResponse<Photo> updatePhoto(Photo photo) {
-        return null;
+        return postPhoto(photo);
     }
 
     @Override
     public ServiceResponse<Photo> deletePhoto(Photo photo) {
-        return null;
+        final ServiceResponse<Photo> response = new ServiceResponse<>();
+        response.set(photo);
+        PhotoDao photoDao = PhotoDao.newPhotoDao(photo);
+        try {
+            photoDao.deleteInBackground(new DeleteCallback() {
+                @Override
+                public void done(ParseException e) {
+                    response.setStatusCode(ServiceResponse.ResponseCode.OK);
+                }
+            });
+        } catch (Exception e) {
+            response.setStatusCode(ServiceResponse.ResponseCode.SERVER_ERROR);
+            response.addMessage(ServiceResponse.ResponseCode.SERVER_ERROR, e.getMessage(),
+                    ServiceResponse.MessageSeverity.ERROR);
+        }
+        return response;
     }
 
     @Override
-    public ServiceResponse<Integer> likePhoto(String url) {
-        return null;
+    public void likePhoto(Photo photo) {
+        incrementPhotoColumn(photo, COLUMN_NAME_LIKES);
     }
 
     @Override
-    public ServiceResponse<Integer> dislikePhoto(String url) {
-        return null;
+    public void dislikePhoto(Photo photo) {
+        incrementPhotoColumn(photo, COLUMN_NAME_DISLIKES);
     }
+
+    private void incrementPhotoColumn(Photo photo, final String column) {
+        // Retrieve the object by id to refresh...
+        ParseQuery<PhotoDao> query = ParseQuery.getQuery(PHOTO_TYPE);
+        query.getInBackground(photo.getObjectId(), new GetCallback<PhotoDao>() {
+            public void done(PhotoDao photoDao, ParseException e) {
+                if (e == null) {
+                    // Now let's update it...
+                    int newcount = photoDao.getInt(column) + 1;
+                    photoDao.put(column, newcount);
+                    ///photoDao.saveEventually();
+                    photoDao.saveInBackground();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 }
