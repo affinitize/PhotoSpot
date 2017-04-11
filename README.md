@@ -18,7 +18,7 @@ Photo Location app.  PhotoSpot is an app that can be used to look for places to 
 * [ ] Users can rate pictures and the app uses that to determine which pictures are shown for each location
 
 ## Stretch goals
-* [ ] User call import their photos on their phone into the app.
+* [ ] User can import their photos on their phone into the app.
 * [ ] User profile view which shows all a user's photos organized by location
 * [ ] Add a section for photos posted by experienced users that also include tips on how to achieve the photos shown.
 * [ ] Add multiple tags for photos
