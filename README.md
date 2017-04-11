@@ -10,7 +10,7 @@ Photo Location app.  PhotoSpot is an app that can be used to look for places to 
 * [ ] Put the search views in different tabs
 * [ ] User can filter results based on the type of photo they want to take (landscape, architecture, etc)
 * [ ] User can click a location (in list or map view) to get a detail view of the location that includes
-  * [ ] Pictures that have been taken there (from flickr)
+  * [ ] Pictures that have been taken there (from flickr)t
   * [ ] Pictures that other users have taken at this location and uploaded
   * [ ] General details about location 
      * [ ] include notes, comments for location
@@ -22,7 +22,9 @@ Photo Location app.  PhotoSpot is an app that can be used to look for places to 
 * [ ] Add multiple tags for photos
 * [ ] share photos with friends
 * [ ] User can upload photos that they take and map them to location
-  * [ ] User can "publish" photos that they upload which would they allow other users to see their photos
+* [ ] User can "publish" photos that they upload which would they allow other users to see their photos
+* [ ] User can get directions to location.
+* [ ] User can import their whole gallery into app
 
 ## Apis we will be using for our primary stories
 * Google places
