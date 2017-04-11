@@ -10,7 +10,7 @@ Photo Location app.  PhotoSpot is an app that can be used to look for places to 
 * [ ] Put the search views in different tabs
 * [ ] User can filter results based on the type of photo they want to take (landscape, architecture, etc)
 * [ ] User can click a location (in list or map view) to get a detail view of the location that includes
-  * [ ] Pictures that have been taken there (from flickr)t
+  * [ ] Pictures that have been taken there (from flickr)
   * [ ] Pictures that other users have taken at this location and uploaded
   * [ ] General details about location 
      * [ ] include notes, comments for location
