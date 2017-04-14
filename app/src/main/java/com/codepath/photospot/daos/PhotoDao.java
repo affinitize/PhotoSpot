@@ -55,6 +55,7 @@ public class PhotoDao extends ParseObject {
      * Ensure that your subclass has a public default (i.e. zero-argument) constructor.
      */
     public PhotoDao() {
+        super();
     }
 
     public static synchronized PhotoDao newPhotoDao(Photo photo) {
@@ -62,6 +63,7 @@ public class PhotoDao extends ParseObject {
         if (photo==null || photo.getObjectId()==null) {
             photoDao = ParseObject.create(PhotoDao.class);
         } else {
+            //To create a reference to an existing object, use ParseObject.createWithoutData():
             photoDao = ParseObject.createWithoutData(PhotoDao.class, photo.getObjectId());
         }
         photoDao.setDataFromPhoto(photo);
@@ -84,7 +86,7 @@ public class PhotoDao extends ParseObject {
         setLongitude(photo.getLongitude());
         setLatitude(photo.getLatitude());
 
-        String[] cats = photo.getCategories();
+        String[] cats = photo.getCategories().split(" ");
         JSONArray jsonArray = new JSONArray();
         for (int i=0; i<cats.length; i++) {
             jsonArray.put(cats[i]);

@@ -7,6 +7,10 @@
     <string name="enter_url">Enter the URL…</string>
     <string name="enter_comment">Enter a Comment…</string>
     <string name="enter_a_url">Please enter a URL.</string>
-    <string name="button_add_photo">Add a Photo</string>
+    <string name="button_add_photo">Commit</string>
     <string name="google_maps_api_key">AIzaSyCHUKdZoU6YHYZe9k3iWeaKen2u5t1hXBE</string>
+    <string name="menu_search">Search</string>
+    <string name="enter_categories">Enter category tags here...</string>
+    <string name="enter_author_name">Enter Author name...</string>
+    <string name="enter_a_location">Please enter a Location.</string>
 </resources>

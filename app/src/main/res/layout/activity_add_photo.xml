@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,11 +21,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/border_bottom" />
+
+
     <EditText
         android:id="@+id/etUrl"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPhoto"
         android:ems="12"
         android:foregroundTint="@android:drawable/bottom_bar"
         android:hint="@string/enter_url"
@@ -27,12 +43,65 @@
     <EditText
         android:id="@+id/etComment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:layout_below="@id/etUrl"
         android:ems="12"
         android:foregroundTint="@android:drawable/bottom_bar"
         android:hint="@string/enter_comment"
         android:maxLength="140" />
+
+<!--
+    Flickr cannot provide these, so they are not here yet...
+    public int width;
+    public int height;
+    public String type;
+    public int colordepth;
+-->
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etComment" />
+<!--  The fragment should provide these two...
+    public double longitude;
+    public double latitude;
+-->
+
+    <EditText
+        android:id="@+id/etCategories"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/place_autocomplete_fragment"
+        android:ems="12"
+        android:foregroundTint="@android:drawable/bottom_bar"
+        android:hint="@string/enter_categories"
+        android:maxLength="140" />
+
+
+    <EditText
+        android:id="@+id/etCreatedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etCategories"
+        android:ems="12"
+        android:foregroundTint="@android:drawable/bottom_bar"
+        android:hint="@string/enter_author_name"
+        android:maxLength="30" />
+
+
+    <!--
+
+        public int likes;
+        public int dislikes;
+
+        public long createdtime;
+        public String source;
+
+    -->
+
+
+
 
     <Space
         android:id="@+id/space"
@@ -40,7 +109,7 @@
         android:layout_height="2dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/etPhoto"
+        android:layout_below="@+id/etCreatedBy"
         android:layout_margin="20dp"
         android:background="@android:color/black"
         android:foreground="@android:color/black"
@@ -48,13 +117,11 @@
         android:visibility="visible" />
 
     <Button
-        android:id="@+id/btPhoto"
+        android:id="@+id/btAddPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/space"
-        android:drawableLeft="@mipmap/ic_launcher"
+        android:layout_below="@+id/space"
+        android:layout_centerHorizontal="true"
         android:drawablePadding="12dp"
         android:inputType="textCapSentences"
         android:text="@string/button_add_photo" />
@@ -63,10 +130,11 @@
         android:id="@+id/tvErrorMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btPhoto"
+        android:layout_below="@+id/btAddPhoto"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        tools:text="TextView" />
-
+        tools:text="Error msg" />
 
 </RelativeLayout>
+</ScrollView>
+

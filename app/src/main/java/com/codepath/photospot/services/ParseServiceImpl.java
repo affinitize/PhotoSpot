@@ -1,7 +1,5 @@
 package com.codepath.photospot.services;
 
-import android.util.Log;
-
 import com.codepath.photospot.daos.PhotoDao;
 import com.codepath.photospot.models.Photo;
 import com.parse.DeleteCallback;
@@ -11,9 +9,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,71 +18,82 @@ import java.util.Set;
 
 public class ParseServiceImpl implements ParseService, ParseConstants {
 
-    public static final String PHOTO_TYPE = "PhotoDao";
+    public static final String PHOTO_QUERY_TYPE = "PhotoDao";
 
-    public static final String COLUMN_NAME_URL = "url";
-    public static final String COLUMN_NAME_TYPE = "type";
-    public static final String COLUMN_NAME_WIDTH = "width";
-    public static final String COLUMN_NAME_HEIGHT = "height";
-    public static final String COLUMN_NAME_COLOR_DEPTH = "colorDepth";
-    public static final String COLUMN_NAME_CATEGORIES = "categories";
-    public static final String COLUMN_NAME_LIKES = "likes";
-    public static final String COLUMN_NAME_DISLIKES = "dislikes";
-    public static final String COLUMN_NAME_CREATED_BY = "createdBy";
-    public static final String COLUMN_NAME_SOURCE = "source";
-    public static final String COLUMN_NAME_CREATED_TIME = "createdTime";
+    private static ParseServiceImpl instance;
+
+    double longitude = 0d;
+    double latitude = 0d;
+    int radius = 0;
+
+    /**
+     * Singleton getter
+     * @return ParseServiceImpl
+     */
+    public static ParseServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new ParseServiceImpl();
+        }
+        return instance;
+    }
+
+    /**
+     * Singleton constructor is private
+     */
+    private ParseServiceImpl() {
+        super();
+    }
 
     @Override
-    public ServiceResponse<List<Photo>> getPhotos(HashMap<String, Object> params) {
-        final ServiceResponse<List<Photo>> response = new ServiceResponse<>();
-        float longitude = 0f;
-        float latitude = 0f;
-        float radius = 0f;
-        ParseQuery<PhotoDao> query = ParseQuery.getQuery(PHOTO_TYPE);
+    public void getPhotos(HashMap<String, Object> params, FindCallback<PhotoDao> callback) {
+        longitude = 0d;
+        latitude = 0d;
+        radius = 0;
+        ParseQuery<PhotoDao> query = ParseQuery.getQuery(PHOTO_QUERY_TYPE);
         Set<String> keys = params.keySet();
         for (String key: keys) {
             Object value = params.get(key);
             if (key.equals(SEARCH_KEY_URL)) {
-                query.whereEqualTo(COLUMN_NAME_URL, value);
+                query.whereEqualTo(PhotoDao.URL_KEY, value);
             } else if (key.equals(SEARCH_KEY_LONGITUDE)) {
-                longitude = (Float)value;
+                longitude = (Double)value;
             } else if (key.equals(SEARCH_KEY_LATITUDE)) {
-                latitude = (Float)value;
+                latitude = (Double)value;
             } else if (key.equals(SEARCH_KEY_RADIUS)) {
-                radius = (Float)value;
+                radius = (Integer)value;
             } else if (key.equals(SEARCH_KEY_TYPE)) {
-                query.whereEqualTo(COLUMN_NAME_TYPE, value);
+                query.whereEqualTo(PhotoDao.TYPE_KEY, value);
             } else if (key.equals(SEARCH_KEY_MAX_WIDTH)) {
-                query.whereLessThanOrEqualTo(COLUMN_NAME_WIDTH, value);
+                query.whereLessThanOrEqualTo(PhotoDao.WIDTH_KEY, value);
             } else if (key.equals(SEARCH_KEY_MIN_WIDTH)) {
-                query.whereGreaterThanOrEqualTo(COLUMN_NAME_WIDTH, value);
+                query.whereGreaterThanOrEqualTo(PhotoDao.WIDTH_KEY, value);
             } else if (key.equals(SEARCH_KEY_MAX_HEIGHT)) {
-                query.whereLessThanOrEqualTo(COLUMN_NAME_HEIGHT, value);
+                query.whereLessThanOrEqualTo(PhotoDao.HEIGHT_KEY, value);
             } else if (key.equals(SEARCH_KEY_MIN_HEIGHT)) {
-                query.whereGreaterThanOrEqualTo(COLUMN_NAME_HEIGHT, value);
+                query.whereGreaterThanOrEqualTo(PhotoDao.HEIGHT_KEY, value);
             } else if (key.equals(SEARCH_KEY_MAX_COLORS)) {
-                query.whereLessThanOrEqualTo(COLUMN_NAME_COLOR_DEPTH, value);
+                query.whereLessThanOrEqualTo(PhotoDao.COLOR_DEPTH_KEY, value);
             } else if (key.equals(SEARCH_KEY_MIN_COLORS)) {
-                query.whereGreaterThanOrEqualTo(COLUMN_NAME_COLOR_DEPTH, value);
+                query.whereGreaterThanOrEqualTo(PhotoDao.COLOR_DEPTH_KEY, value);
             } else if (key.equals(SEARCH_KEY_CATEGORY)) {
                 // This will Find objects where the array in categories contains the value...
-                query.whereEqualTo(COLUMN_NAME_CATEGORIES, value);
+                query.whereEqualTo(PhotoDao.CATEGORIES_KEY, value);
             } else if (key.equals(SEARCH_KEY_MAX_LIKES)) {
-                query.whereLessThanOrEqualTo(COLUMN_NAME_LIKES, value);
+                query.whereLessThanOrEqualTo(PhotoDao.LIKES_KEY, value);
             } else if (key.equals(SEARCH_KEY_MIN_LIKES)) {
-                query.whereGreaterThanOrEqualTo(COLUMN_NAME_LIKES, value);
+                query.whereGreaterThanOrEqualTo(PhotoDao.LIKES_KEY, value);
             } else if (key.equals(SEARCH_KEY_MAX_DISLIKES)) {
-                query.whereLessThanOrEqualTo(COLUMN_NAME_DISLIKES, value);
+                query.whereLessThanOrEqualTo(PhotoDao.DISLIKES_KEY, value);
             } else if (key.equals(SEARCH_KEY_MIN_DISLIKES)) {
-                query.whereGreaterThanOrEqualTo(COLUMN_NAME_DISLIKES, value);
+                query.whereGreaterThanOrEqualTo(PhotoDao.DISLIKES_KEY, value);
             } else if (key.equals(SEARCH_KEY_CREATED_BY)) {
-                query.whereEqualTo(COLUMN_NAME_CREATED_BY, value);
+                query.whereEqualTo(PhotoDao.CREATED_BY_KEY, value);
             } else if (key.equals(SEARCH_KEY_SOURCE)) {
-                query.whereEqualTo(COLUMN_NAME_SOURCE, value);
+                query.whereEqualTo(PhotoDao.SOURCE_KEY, value);
             } else if (key.equals(SEARCH_KEY_MAX_TIME)) {
-                query.whereLessThanOrEqualTo(COLUMN_NAME_CREATED_TIME, value);
+                query.whereLessThanOrEqualTo(PhotoDao.CREATED_TIME_KEY, value);
             } else if (key.equals(SEARCH_KEY_MIN_TIME)) {
-                query.whereGreaterThanOrEqualTo(COLUMN_NAME_CREATED_TIME, value);
+                query.whereGreaterThanOrEqualTo(PhotoDao.CREATED_TIME_KEY, value);
             } else if (key.equals(SEARCH_KEY_SKIP_COUNT)) {
                 // start at the offset value...
                 query.setSkip((Integer)value);
@@ -97,102 +104,59 @@ public class ParseServiceImpl implements ParseService, ParseConstants {
                 // set the order...
                 query.orderByDescending((String)value);
             } else {
-                response.addMessage(ServiceResponse.ResponseCode.BAD_REQUEST,
-                        "Unknown parameter key: " + key,
-                        ServiceResponse.MessageSeverity.ERROR);
+                throw new IllegalArgumentException(
+                        "Error: Unknown parameter key: " + key);
             }
         }
 
         if ((longitude!=0 || latitude!=0 || radius!=0) &&
                 (latitude==0 || longitude==0 || radius==0)) {
-            response.addMessage(ServiceResponse.ResponseCode.BAD_REQUEST,
-                    "For proximity, you must supply all 3 parameters for latitude, longitude and radius.",
-                    ServiceResponse.MessageSeverity.ERROR);
+            throw new IllegalArgumentException(
+                    "For proximity, you must supply all 3 parameters for latitude, longitude and radius.");
         }
 
-        // TODO: implement the location filter...
-        // ...
-
-        if (response.getMessages().size()==0) {
-            query.findInBackground(new FindCallback<PhotoDao>() {
-                public void done(List<PhotoDao> photoDaoList, ParseException e) {
-                    if (e == null) {
-                        Log.d("photo", "Retrieved " + photoDaoList.size() + " photos");
-                        List<Photo> photoList = new ArrayList<Photo>();
-                        for (int i=0; i<photoDaoList.size(); i++) {
-                            photoList.add(new Photo(photoDaoList.get(i)));
-                        }
-                        response.set(photoList);
-                    } else {
-                        Log.d("photo", "Error: " + e.getMessage());
-                        response.addMessage(ServiceResponse.ResponseCode.SERVER_ERROR,
-                                "Error while getting list: " + e.getMessage(),
-                                ServiceResponse.MessageSeverity.ERROR);
-                    }
-                }
-            });
+        // Simple Location filter without using the problematic whereNear() method...
+        if (radius!=0) {
+            double degrees = radius/70d;
+            query.whereGreaterThan(PhotoDao.LONGITUDE_KEY, longitude - degrees);
+            query.whereLessThan(PhotoDao.LONGITUDE_KEY, longitude + degrees);
+            query.whereGreaterThan(PhotoDao.LATITUDE_KEY, latitude - degrees);
+            query.whereLessThan(PhotoDao.LATITUDE_KEY, latitude + degrees);
         }
-        return response;
+
+        query.findInBackground(callback);
     }
 
     @Override
-    public ServiceResponse<Photo> postPhoto(final Photo photo) {
-        final ServiceResponse<Photo> response = new ServiceResponse<>();
-        response.set(photo);
+    public void postPhoto(final Photo photo, SaveCallback callback) {
         PhotoDao photoDao = PhotoDao.newPhotoDao(photo);
-        try {
-            photoDao.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    response.setStatusCode(ServiceResponse.ResponseCode.OK);
-                }
-            });
-        } catch (Exception e) {
-            response.setStatusCode(ServiceResponse.ResponseCode.SERVER_ERROR);
-            response.addMessage(ServiceResponse.ResponseCode.SERVER_ERROR, e.getMessage(),
-                    ServiceResponse.MessageSeverity.ERROR);
-        }
-        return response;
+        photoDao.saveInBackground(callback);
     }
 
     @Override
-    public ServiceResponse<Photo> updatePhoto(Photo photo) {
-        return postPhoto(photo);
+    public void updatePhoto(Photo photo, SaveCallback callback) {
+        postPhoto(photo, callback);
     }
 
     @Override
-    public ServiceResponse<Photo> deletePhoto(Photo photo) {
-        final ServiceResponse<Photo> response = new ServiceResponse<>();
-        response.set(photo);
+    public void deletePhoto(Photo photo, DeleteCallback callback) {
         PhotoDao photoDao = PhotoDao.newPhotoDao(photo);
-        try {
-            photoDao.deleteInBackground(new DeleteCallback() {
-                @Override
-                public void done(ParseException e) {
-                    response.setStatusCode(ServiceResponse.ResponseCode.OK);
-                }
-            });
-        } catch (Exception e) {
-            response.setStatusCode(ServiceResponse.ResponseCode.SERVER_ERROR);
-            response.addMessage(ServiceResponse.ResponseCode.SERVER_ERROR, e.getMessage(),
-                    ServiceResponse.MessageSeverity.ERROR);
-        }
-        return response;
+        photoDao.deleteInBackground(callback);
     }
 
     @Override
     public void likePhoto(Photo photo) {
-        incrementPhotoColumn(photo, COLUMN_NAME_LIKES);
+        incrementPhotoColumn(photo, PhotoDao.LIKES_KEY);
     }
 
     @Override
     public void dislikePhoto(Photo photo) {
-        incrementPhotoColumn(photo, COLUMN_NAME_DISLIKES);
+        incrementPhotoColumn(photo, PhotoDao.DISLIKES_KEY);
     }
 
     private void incrementPhotoColumn(Photo photo, final String column) {
         // Retrieve the object by id to refresh...
-        ParseQuery<PhotoDao> query = ParseQuery.getQuery(PHOTO_TYPE);
+        ParseQuery<PhotoDao> query = ParseQuery.getQuery(PHOTO_QUERY_TYPE);
         query.getInBackground(photo.getObjectId(), new GetCallback<PhotoDao>() {
             public void done(PhotoDao photoDao, ParseException e) {
                 if (e == null) {

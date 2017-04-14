@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -49,6 +50,19 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks,
 
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+
+        if (mLastLocation==null) {
+            // This is the location for the Netscape building in Los Gatos...
+            mLastLocation = new Location("APP");
+            mLastLocation.setLatitude(37.25704429);
+            mLastLocation.setLongitude(-121.96378827);
+            mLastLocation.setAltitude(85.22966003);
+            //mLastLocation.makeComplete();
+            mLastLocation.setProvider("?");
+            mLastLocation.setAccuracy(100.0f);
+            mLastLocation.setTime(System.currentTimeMillis());
+            mLastLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+        }
 
         LocationUpdateListener listener = (LocationUpdateListener) activity;
         listener.onLocationUpdate(mLastLocation);

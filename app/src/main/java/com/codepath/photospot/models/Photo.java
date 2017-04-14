@@ -6,8 +6,6 @@ import com.codepath.photospot.daos.PhotoDao;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
-
 /**
  * Created by dfrie on 4/6/2017.
  */
@@ -28,7 +26,7 @@ public class Photo {
     public int colordepth;
     public double longitude;
     public double latitude;
-    public String[] categories;
+    public String categories;
     public int likes;
     public int dislikes;
     public String comment;
@@ -58,20 +56,21 @@ public class Photo {
         createdtime = dao.getCreatedTime();
         source = dao.getSource();
 
-        // TODO...
-        //String[] array = new ObjectMapper().readValue(json, String[].class);
-        // For now,...
+        StringBuilder sb = new StringBuilder();
         JSONArray cats = dao.getCategories();
-        categories = new String[cats.length()];
         int i=0;
         try {
             for (i=0; i<cats.length(); i++) {
-                categories[i] = cats.getString(i);
+                if (i>0) {
+                    sb.append(" ");
+                }
+                sb.append(cats.getString(i));
             }
         } catch (JSONException e) {
             //TODO:  do something more here? ...like truncate the array?...
             e.printStackTrace();
         }
+        categories = sb.toString();
     }
 
     public Photo(FlickrPhoto foto) {
@@ -97,30 +96,34 @@ public class Photo {
             // do nothing, but dont fail; createdtime will be 0...
         }
 
-        ArrayList<String> list = new ArrayList<>();
+        StringBuilder allTags = new StringBuilder();
         if (foto.isFamily()) {
-            list.add(FLICKR_CATEGORY_FAMILY);
+            addTag(FLICKR_CATEGORY_FAMILY, allTags);
         }
         if (foto.isFriend()) {
-            list.add(FLICKR_CATEGORY_FRIEND);
+            addTag(FLICKR_CATEGORY_FRIEND, allTags);
         }
         if (foto.isPublic()) {
-            list.add(FLICKR_CATEGORY_PUBLIC);
+            addTag(FLICKR_CATEGORY_PUBLIC, allTags);
         }
-        // Add whatever tags we have into categories...
+        // Add whatever tags we have into categories, too...
         String tags = foto.getTags();
         if (tags!=null && tags.length()>1) {
             String[] tagarr = tags.split(" ");
             for (String tag: tagarr) {
                 if (tag.length()>1) {
-                    list.add(tag);
+                    addTag(tag, allTags);
                 }
             }
         }
-        if (list.size()>0) {
-            categories = new String[list.size()];
-            categories = list.toArray(categories);
+        categories = allTags.toString();
+    }
+
+    private void addTag(String tag, StringBuilder tags) {
+        if (tags.length()>0) {
+            tags.append(" ");
         }
+        tags.append(tag);
     }
 
     public String getObjectId() {
@@ -187,11 +190,11 @@ public class Photo {
         this.latitude = latitude;
     }
 
-    public String[] getCategories() {
+    public String getCategories() {
         return categories;
     }
 
-    public void setCategories(String[] categories) {
+    public void setCategories(String categories) {
         this.categories = categories;
     }
 

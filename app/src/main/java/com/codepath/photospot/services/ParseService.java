@@ -1,9 +1,12 @@
 package com.codepath.photospot.services;
 
+import com.codepath.photospot.daos.PhotoDao;
 import com.codepath.photospot.models.Photo;
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.SaveCallback;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * End points:
@@ -48,13 +51,13 @@ import java.util.List;
  */
 public interface ParseService {
 
-    public ServiceResponse<List<Photo>> getPhotos(HashMap<String, Object> params);
+    public void getPhotos(HashMap<String, Object> params, FindCallback<PhotoDao> callback);
 
-    public ServiceResponse<Photo> postPhoto(Photo photo);
+    public void postPhoto(Photo photo, SaveCallback callback);
 
-    public ServiceResponse<Photo> updatePhoto(Photo photo);
+    public void updatePhoto(Photo photo, SaveCallback callback);
 
-    public ServiceResponse<Photo> deletePhoto(Photo photo);
+    public void deletePhoto(Photo photo, DeleteCallback callback);
 
     public void likePhoto(Photo photo);
 
