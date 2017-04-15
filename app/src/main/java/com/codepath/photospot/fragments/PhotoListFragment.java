@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codepath.photospot.PhotoSpotApplication;
 import com.codepath.photospot.R;
 import com.codepath.photospot.adapters.PhotoAdapter;
 import com.codepath.photospot.daos.FlickrPhoto;
@@ -63,7 +64,8 @@ public class PhotoListFragment extends Fragment {
 
     public void photoSearch(double latit, double longit) {
         photos.clear();
-        FlickrClient fc = FlickrClient.getFlickrClient();
+        PhotoSpotApplication psa = (PhotoSpotApplication) getActivity().getApplication();
+        FlickrClient fc = psa.getFlickrClient();
         fc.getPhotos(flickrCallback, latit, longit);
 
         // Piggybacking on the existing call we need to merge results with,...

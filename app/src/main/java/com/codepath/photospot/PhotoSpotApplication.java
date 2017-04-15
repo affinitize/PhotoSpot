@@ -4,6 +4,7 @@ import android.app.Application;
 import android.widget.Toast;
 
 import com.codepath.photospot.daos.PhotoDao;
+import com.codepath.photospot.network.FlickrClient;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -27,7 +28,8 @@ public class PhotoSpotApplication extends Application {
     public static final String MASTER_KEY_KEY = "parse_master_key";
     public static String MASTER_KEY_SECRET;
 
-
+    private static final String FLICKR_API_KEY = "flickr_api_key";
+    FlickrClient flickrClient;
 
     @Override
     public void onCreate() {
@@ -40,6 +42,8 @@ public class PhotoSpotApplication extends Application {
             APP_ID_SECRET = props.getProperty(APP_ID_KEY);
             SERVER_URL_SECRET = props.getProperty(SERVER_URL_KEY);
             MASTER_KEY_SECRET = props.getProperty(MASTER_KEY_KEY);
+            String flickrApiKey = props.getProperty(FLICKR_API_KEY);
+            flickrClient = new FlickrClient(flickrApiKey);
         } catch (FileNotFoundException e) {
             Toast.makeText(this, API_KEY_FILE + getString(R.string.file_not_found), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
@@ -62,11 +66,8 @@ public class PhotoSpotApplication extends Application {
                 .server(SERVER_URL_SECRET).build());
 
     }
-/*
 
-    public static TwitterClient getRestClient() {
-        return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApplication.context);
+    public FlickrClient getFlickrClient() {
+        return flickrClient;
     }
-*/
-
 }

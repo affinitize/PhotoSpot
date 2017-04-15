@@ -11,28 +11,15 @@ import okhttp3.Request;
 
 public class FlickrClient {
     public static final String URL = "https://api.flickr.com/services/rest/";
-    public static final String APIKEY = "530031de11347a205c403256e420e647";
     public static final String FORMAT_JSON = "json";
 
-    private static FlickrClient instance;
-
-    /**
-     * Singleton getter
-     * @return FlickrClient
-     */
-    public static FlickrClient getFlickrClient() {
-        if (instance == null) {
-            instance = new FlickrClient();
-        }
-
-        return instance;
-    }
+    private String apiKey;
 
     /**
      * constructor needs to be private for singleton
      */
-    private FlickrClient() {
-        super();
+    public FlickrClient(String apiKey) {
+        this.apiKey = apiKey;
     }
 
     public void getPhotos(Callback callback, double lat, double lang) {
@@ -42,7 +29,7 @@ public class FlickrClient {
     private void sendRequest(String method, Callback callback, double lat, double lang) {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(URL).newBuilder();
         urlBuilder.addQueryParameter("method", method);
-        urlBuilder.addQueryParameter("api_key", APIKEY);
+        urlBuilder.addQueryParameter("api_key", apiKey);
         urlBuilder.addQueryParameter("format", FORMAT_JSON);
         urlBuilder.addQueryParameter("nojsoncallback", "1");
         urlBuilder.addQueryParameter("extras", "description,date_upload,owner_name,geo,tags,url_m");
