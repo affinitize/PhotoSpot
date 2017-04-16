@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.photospot.R;
+import com.codepath.photospot.adapters.MapWindowAdapter;
 import com.codepath.photospot.daos.FlickrPhoto;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,8 +29,7 @@ public class PhotoMapFragment extends Fragment {
     private SupportMapFragment mapFragment;
     private GoogleMap map;
 
-    private ArrayList<FlickrPhoto> photos;
-    private HashMap<FlickrPhoto, Marker> hashMap;
+    private HashMap<Marker, FlickrPhoto> hashMap;
 
     // newInstance constructor for creating fragment with arguments
     public static PhotoMapFragment newInstance() {
@@ -41,13 +40,12 @@ public class PhotoMapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        photos = new ArrayList<>();
         hashMap = new HashMap<>();
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_map, container, false);
 
@@ -57,6 +55,7 @@ public class PhotoMapFragment extends Fragment {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
+                    map.setInfoWindowAdapter(new MapWindowAdapter(inflater, getActivity()));
                 }
             });
         } else {
@@ -88,7 +87,6 @@ public class PhotoMapFragment extends Fragment {
     }
 
     public void newList(List<FlickrPhoto> photos) {
-        this.photos.clear();
         map.clear();
         for (FlickrPhoto photo: photos) {
             newPhoto(photo);
@@ -106,6 +104,8 @@ public class PhotoMapFragment extends Fragment {
                 .title(photo.getTitle())
                 .icon(defaultMarker));
 
-        hashMap.put(photo, mapMarker);
+        mapMarker.setTag(photo);
+
+        hashMap.put(mapMarker, photo);
     }
 }
