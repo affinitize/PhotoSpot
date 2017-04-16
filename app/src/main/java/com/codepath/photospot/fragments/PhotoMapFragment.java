@@ -8,18 +8,32 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.photospot.R;
+import com.codepath.photospot.daos.FlickrPhoto;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class PhotoMapFragment extends Fragment {
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
 
+    private ArrayList<FlickrPhoto> photos;
+    private HashMap<FlickrPhoto, Marker> hashMap;
+
     // newInstance constructor for creating fragment with arguments
     public static PhotoMapFragment newInstance() {
-        PhotoMapFragment fragmentFirst = new PhotoMapFragment();
         return new PhotoMapFragment();
     }
 
@@ -27,6 +41,8 @@ public class PhotoMapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        photos = new ArrayList<>();
+        hashMap = new HashMap<>();
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -58,5 +74,38 @@ public class PhotoMapFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Move camera to location at specified latitude/longitude
+     * @param latitude
+     * @param longitude
+     */
+    public void moveCamera(double latitude, double longitude) {
+        LatLng latLng = new LatLng(latitude, longitude);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+        map.animateCamera(cameraUpdate);
+    }
+
+    public void newList(List<FlickrPhoto> photos) {
+        this.photos.clear();
+        map.clear();
+        for (FlickrPhoto photo: photos) {
+            newPhoto(photo);
+        }
+    }
+
+    private void newPhoto(FlickrPhoto photo) {
+        BitmapDescriptor defaultMarker =
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+
+        LatLng listingPosition = new LatLng(photo.getLatitude(), photo.getLongitude());
+
+        Marker mapMarker = map.addMarker(new MarkerOptions()
+                .position(listingPosition)
+                .title(photo.getTitle())
+                .icon(defaultMarker));
+
+        hashMap.put(photo, mapMarker);
     }
 }

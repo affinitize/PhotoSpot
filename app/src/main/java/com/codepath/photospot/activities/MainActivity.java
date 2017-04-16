@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity
         public void onPlaceSelected(Place place) {
             Log.i("DEBUG", "Place: " + place.getName());
             LatLng latLng = place.getLatLng();
-            PhotoSearch ps = new PhotoSearch(MainActivity.this, latLng.latitude, latLng.longitude);
-            ps.executeSearch();
+            updateLocation(latLng.latitude, latLng.longitude);
         }
 
         @Override
@@ -137,17 +136,26 @@ public class MainActivity extends AppCompatActivity
      * @param location new location
      */
     public void onLocationUpdate(Location location) {
-        PhotoSearch ps = new PhotoSearch(MainActivity.this, location.getLatitude(), location.getLongitude());
-        ps.executeSearch();
+        updateLocation(location.getLatitude(), location.getLongitude());
     }
 
+    private void updateLocation(double latitude, double longitude) {
+        PhotoSearch ps = new PhotoSearch(MainActivity.this, latitude, longitude);
+        ps.executeSearch();
+
+        // update the map view
+        PhotoMapFragment pmf = (PhotoMapFragment) adapterViewPager.getRegisteredFragment(1);
+        pmf.moveCamera(latitude, longitude);
+    }
     /**
      * Used to update both search results fragments
      * @param photos List of photos that was generated from the search
      */
     public void useSearchResults(List<FlickrPhoto> photos) {
-        PhotoListFragment fragment = (PhotoListFragment) adapterViewPager.getRegisteredFragment(0);
-        fragment.newList(photos);
+        PhotoListFragment plf = (PhotoListFragment) adapterViewPager.getRegisteredFragment(0);
+        plf.newList(photos);
+        PhotoMapFragment pmf = (PhotoMapFragment) adapterViewPager.getRegisteredFragment(1);
+        pmf.newList(photos);
     }
 
     /**
