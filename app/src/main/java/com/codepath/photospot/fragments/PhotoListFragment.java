@@ -1,5 +1,6 @@
 package com.codepath.photospot.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.photospot.R;
+import com.codepath.photospot.activities.PhotoDetailActivity;
 import com.codepath.photospot.adapters.PhotoAdapter;
 import com.codepath.photospot.daos.FlickrPhoto;
+import com.codepath.photospot.utils.ItemClickSupport;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +42,18 @@ public class PhotoListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvPhotos.setLayoutManager(linearLayoutManager);
         setHasOptionsMenu(true);
+
+        ItemClickSupport.addTo(rvPhotos).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
+                        FlickrPhoto photo = photos.get(position);
+                        i.putExtra("photo", Parcels.wrap(photo));
+                        startActivity(i);
+                    }
+                }
+        );
         return v;
     }
 

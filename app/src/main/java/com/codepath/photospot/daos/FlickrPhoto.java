@@ -1,29 +1,34 @@
 package com.codepath.photospot.daos;
 
+import org.parceler.Parcel;
+
 /**
  * Created by pauljmin on 4/8/17.
  */
 
+@Parcel
 public class FlickrPhoto {
     static final String photoURL = "https://farm%s.staticflickr.com/%s/%s_%s.jpg";
 
-    String id;
-    String farm;
-    String server;
-    String secret;
-    String owner;
-    String title;
+    public String id;
+    public String farm;
+    public String server;
+    public String secret;
+    public String owner;
+    public String title;
 //    String description;
-    String ownername;
-    String dateupload;
-    String url_m;
-    double latitude;
+public String ownername;
+    public String dateupload;
+    public String url_m;
+    public double latitude;
     double longitude;
-    String tags;
+    public String tags;
 
-    boolean isPublic;
-    boolean isFriend;
-    boolean isFamily;
+    public boolean isPublic;
+    public boolean isFriend;
+    public boolean isFamily;
+
+    public FlickrPhoto() {}
 
     public String getUrl() {
         return String.format(photoURL, farm, server, id, secret);

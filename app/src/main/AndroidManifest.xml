@@ -40,7 +40,7 @@
             android:value="AIzaSyA_fScSOrtb_aOxBzcf93PAhaL3C6GT2m8" />
 
         <activity android:name="com.codepath.photospot.activities.AddPhotoActivity" />
-
+        <activity android:name="com.codepath.photospot.activities.PhotoDetailActivity" />
 
     </application>
 

@@ -1,5 +1,6 @@
 package com.codepath.photospot.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.photospot.R;
+import com.codepath.photospot.activities.PhotoDetailActivity;
 import com.codepath.photospot.adapters.MapWindowAdapter;
 import com.codepath.photospot.daos.FlickrPhoto;
 import com.google.android.gms.maps.CameraUpdate;
@@ -20,6 +22,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.parceler.Parcels;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +72,15 @@ public class PhotoMapFragment extends Fragment {
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
-            // Map is ready
-            Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
+                    FlickrPhoto photo = (FlickrPhoto) marker.getTag();
+                    i.putExtra("photo", Parcels.wrap(photo));
+                    startActivity(i);
+                }
+            });
         } else {
             Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
